@@ -1,10 +1,8 @@
 const { execSync } = require('child_process');
 const { readFileSync, writeFileSync } = require('fs');
-
-const LOG = true;
-const FILENAME = '__taskier.md';
-
 const inquirer = require('inquirer');
+
+const { FILENAME, LOG } = require('./constants');
 
 function readTemplate({ params }) {
   const data = readFileSync('template.md').toString();
@@ -44,14 +42,16 @@ function saveNewFileToDisk({ data, params }) {
 }
 
 function commitFile(props) {
-  execSync('git add __taskier.md');
-  execSync('git commit -m "docs: add __taskier.md"');
+  execSync(`git add ${FILENAME}`);
+  execSync(`git commit -m "docs: add ${FILENAME}"`);
   return props;
 }
 
 function replacePlaceholders({ data: rawData, params }) {
+  const { id, title, description } = params;
   function replaceTitle(data) {
-    return data;
+    const combinedTitle = [id, title].filter(p => p.length).join(' - ');
+    return data.replace('[[title]]', combinedTitle);
   }
 
   function replaceDescription(data) {
@@ -69,7 +69,8 @@ function add() {
       .then(replacePlaceholders)
       .then(saveNewFileToDisk)
       .then(commitFile)
-      .then(log);
+      .then(log)
+      .then(() => console.log('__taskier.md file was added successfully!'));
   });
 }
 
