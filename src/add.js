@@ -48,14 +48,18 @@ function commitFile(props) {
 }
 
 function replacePlaceholders({ data: rawData, params }) {
-  const { id, title, description } = params;
+  const { id, title } = params;
+
   function replaceTitle(data) {
     const combinedTitle = [id, title].filter(p => p.length).join(' - ');
-    return data.replace('[[title]]', combinedTitle);
+    const _title = combinedTitle ? `## ${combinedTitle}\n` : '';
+    return data.replace('[[## title]]', _title);
   }
 
   function replaceDescription(data) {
-    return data;
+    const { description } = params;
+    const _description = description ? `\n${description}` : '';
+    return data.replace('[[description]]', _description);
   }
 
   const data = [replaceTitle, replaceDescription].reduce((acc, fn) => fn(acc), rawData);

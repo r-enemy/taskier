@@ -1,7 +1,4 @@
-## [[title]]
-
-[[description]]
-
+[[## title]][[description]]
 ### Preparation
 
 - [ ] Some info
