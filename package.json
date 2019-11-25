@@ -1,6 +1,6 @@
 {
   "name": "taskier",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple add and remove documentation to repositories",
   "main": "index.js",
   "scripts": {
